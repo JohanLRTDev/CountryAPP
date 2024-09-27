@@ -15,12 +15,17 @@
         <input type="range" value="24" max="250" id="inputRange" />
         <span id="rangeValue">24</span>
       </div>
-      <button class="btnSort" id="minToMax">Tri croissant</button>
-      <button class="btnSort" id="maxToMin">Tri décroissant</button>
-      <button class="btnSort" id="alpha">Tri Alphabétique</button>
+      <div class="dropdown">
+        <button class="dropbtn">trier par &#x2B9F</button>
+        <div class="dropdown-content">
+          <a  id="minToMax">Tri croissant</button></a>
+          <a id="maxToMin">Tri décroissant</a>
+          <a id="alpha">Tri Alphabétique</a>
+        </div>
+      </div>
     </div>
 
-    <div class="countries-container" id="cc"></div>
+    <div class="countries-container" id="contai"></div>
 
     <script src="index.js"></script>
   </body>
