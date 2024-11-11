@@ -21,10 +21,11 @@ const dataCountriesDisplay = () => {
     .map(
       (country) =>
         `<li><img src="${country.flag}" alt="Drapeau de ${country.name}">
-      <h2>${country.name}</h2>
-      <p>${country.capital}</p>
-      <p>${country.population} habitants</p>
-      </li>`
+         <h2>${country.translations.fr}</h2>
+         <p>${country.capital}</p>
+         <p>${country.population.toLocaleString()} habitants</p>
+         </li>
+        `
     )
     .join("");
 };
@@ -56,9 +57,10 @@ inputSearch.addEventListener("input", (e) => {
   //stock les données des pays filtrées dans le tableau dataCountryFilter
   dataCountryFilter = dataCountries.filter(
     (country) =>
-      country.name.toLowerCase().includes(e.target.value.toLowerCase()) //comparaison de la valeur de l'input avec le nom du pays en minuscule
+      country.translations.fr
+        .toLowerCase()
+        .includes(e.target.value.toLowerCase()) //comparaison de la valeur de l'input avec le nom du pays en minuscule
   );
-
   if (dataCountryFilter.length < 1) {
     alert("Aucun pays ne correspond à votre recherche.");
     e.target.value = "";
@@ -70,3 +72,5 @@ document.addEventListener("input", () => {
   rangeValue.textContent = inputRange.value;
   dataCountriesDisplay(); //affichage des données filtrées
 });
+
+//.....

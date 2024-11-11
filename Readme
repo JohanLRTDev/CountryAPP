@@ -1,0 +1,90 @@
+
+### 1. **Sélection des éléments et initialisation des variables**
+const countriesContainer = document.querySelector(".countries-container");
+let dataCountries = []; // Données des pays
+let dataCountryFilter = []; // Données filtrées par recherche
+let countryToDisplay = []; // Pays à afficher
+
+Je sélectionne l'élément HTML où les pays seront affichés et initialise des tableaux pour stocker les données des pays, les données filtrées et celles à afficher.
+
+### 2. **Récupération des données depuis l'API**
+const fetchData = async () => {
+  await fetch("https://restcountries.com/v2/all")
+    .then((res) => res.json())
+    .then((data) => (dataCountries = data));
+};
+
+Je récupère les données des pays via l'API REST, et je stocke ces données dans `dataCountries`.
+
+### 3. **Affichage des pays dans le DOM**
+const dataCountriesDisplay = () => {
+  countryToDisplay = dataCountryFilter.length > 0 ? dataCountryFilter : dataCountries;
+  countriesContainer.innerHTML = countryToDisplay
+    .slice(0, inputRange.value)
+    .map((country) => `<li><img src="${country.flag}" alt="Drapeau de ${country.name}">
+       <h2>${country.translations.fr}</h2>
+       <p>${country.capital}</p>
+       <p>${country.population.toLocaleString()} habitants</p>
+     </li>`)
+    .join("");
+};
+Je mets à jour l'affichage des pays en fonction de la recherche ou de toutes les données disponibles. J'utilise `slice` pour limiter le nombre de pays affichés selon la valeur du range.
+
+### 4. **Tri des pays**
+const trieOption = () => {
+  minToMax.addEventListener("click", () => {
+    countryToDisplay.sort((a, b) => a.population - b.population);
+    dataCountriesDisplay();
+  });
+  maxToMin.addEventListener("click", () => {
+    countryToDisplay.sort((a, b) => b.population - a.population);
+    dataCountriesDisplay();
+  });
+  alpha.addEventListener("click", () => {
+    countryToDisplay.sort((a, b) => a.name.localeCompare(b.name));
+    dataCountriesDisplay();
+  });
+};
+trieOption();
+
+Je permets à l'utilisateur de trier les pays par population croissante, décroissante, ou par ordre alphabétique en écoutant les clics sur les boutons de tri.
+
+### 5. **Chargement des données au démarrage**
+document.addEventListener("DOMContentLoaded", async () => {
+  await fetchData();
+  dataCountriesDisplay();
+});
+
+Au chargement de la page, je récupère les données des pays et je les affiche immédiatement.
+
+### 6. **Filtrage par recherche utilisateur**
+inputSearch.addEventListener("input", (e) => {
+  dataCountryFilter = dataCountries.filter((country) =>
+    country.translations.fr.toLowerCase().includes(e.target.value.toLowerCase())
+  );
+  if (dataCountryFilter.length < 1) {
+    alert("Aucun pays ne correspond à votre recherche.");
+    e.target.value = "";
+  }
+  dataCountriesDisplay();
+});
+
+Je filtre les pays en fonction de la recherche de l'utilisateur. Si aucune correspondance n'est trouvée, j'affiche une alerte.
+
+### 7. **Gestion de l'input range pour limiter l'affichage**
+document.addEventListener("input", () => {
+  rangeValue.textContent = inputRange.value;
+  dataCountriesDisplay();
+});
+
+
+Je mets à jour l'affichage pour limiter le nombre de pays affichés en fonction de la valeur du `range` et je l'affiche dynamiquement dans le DOM.
+
+### Résumé des Concepts Appris :
+
+- **Récupération de données depuis une API** : Utilisation de `fetch` pour charger des données externes.
+- **Manipulation du DOM** : Affichage dynamique des données en HTML et gestion des interactions utilisateur.
+- **Tri et filtrage** : Mise en place de fonctionnalités pour trier et filtrer les données selon des critères définis.
+- **Événements et interactions utilisateur** : Écoute des événements comme le clic, la saisie et l'input range pour réagir et mettre à jour l'interface.
+
+Ce projet m'a permis de pratiquer la récupération et l'affichage de données depuis une API, ainsi que la gestion des interactions utilisateur pour trier et filtrer les informations dynamiquement.
